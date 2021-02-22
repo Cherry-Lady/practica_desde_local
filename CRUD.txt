@@ -1,0 +1,95 @@
+
+//Conexión ----------------------------------------------------------------------------------------------------------------------------
+
+Class.forName("com.mysql.jdbc.Driver");
+Connection conexion = DriverManager.getConnection("jdbc:mysql://" + ip + ":" + puerto + "/" + nombre_bbdd, usuario, contraseña);
+
+
+//SELECT ------------------------------------------------------------------------------------------------------------------------------
+
+String SQL = "SELECT a_int, b_string, c_float FROM tabla WHERE a_int = ? AND b_string = ?";
+
+//Se prepara (compila) la select:
+
+PreparedStatement stmt = conexion.prepareStatement(SQL);
+
+//Se da valor a los parámetros (?) usando los .set del PreparedStatement según el tipo de dato, y en orden de aparición:
+stmt.setInt(1, dato_a_int);
+stmt.setString(2, "dato_b_string");
+
+//Se ejecuta y almacena el resultado:
+ResultSet rs = stmt.executeQuery();
+
+//Creo unas variables para que almacenen los datos devueltos (esto lo hago para el ejemplo, a lo mejor no te hace falta):
+int resultado_a;
+String resultado_b;
+float resultado_c;
+
+//Para recorrer y extraer los resultados (usando los .get del ResultSet según el tipo de dato):
+
+//La select devuelve una fila, o se quiere comprobar si hay resultados:
+if(rs.next()){
+	resultado_a = rs.getInt("a_int");
+	resultado_b = rs.getString("b_string");
+	resultado_c = rs.getFloat("c_float");
+}
+
+//La select devuelve varias filas y se quieren recorrer todas:
+while (rs.next()) {
+	...
+}
+
+
+//UPDATE ------------------------------------------------------------------------------------------------------------------------------
+
+String SQL = "UPDATE tabla SET a_int = ?, b_string = ? WHERE a_int = ?";
+
+//Se prepara (compila) el update:
+
+PreparedStatement stmt = conexion.prepareStatement(SQL);
+
+//Se dan valor a los parámetros (?) usando los .set del PreparedStatement según el tipo de dato, y en orden de aparición:
+stmt.setInt(1, nuevo_a_int);
+stmt.setString(2, "nuevo_b_string");
+stmt.setInt(3, dato_a_int);
+
+//Se ejecuta el update:
+stmt.executeUpdate();
+
+
+//INSERT ------------------------------------------------------------------------------------------------------------------------------
+
+String SQL = "INSERT INTO tabla (a_int, b_string, c_float) VALUES (?, ?, ?)";
+
+//Se prepara (compila) el insert:
+
+PreparedStatement stmt = conexion.prepareStatement(SQL);
+
+//Se dan valor a los parámetros (?) usando los .set del PreparedStatement según el tipo de dato, y en orden de aparición:
+stmt.setInt(1, nuevo_a_int);
+stmt.setString(2, "nuevo_b_string");
+stmt.setFloat(3, nuevo_c_float);
+
+//Se ejecuta el insert:
+stmt.executeUpdate();
+
+
+//DELETE ------------------------------------------------------------------------------------------------------------------------------
+
+String SQL = "DELETE FROM tabla WHERE a_int = ?";
+
+//Se prepara (compila) el delete:
+
+PreparedStatement stmt = conexion.prepareStatement(SQL);
+
+//Se dan valor a los parámetros (?) usando los .set del PreparedStatement según el tipo de dato, y en orden de aparición:
+stmt.setInt(1, dato_a_int);
+
+//Se ejecuta el delete:
+stmt.executeUpdate();
+
+
+
+EXPORT TO ZIP
+
+
